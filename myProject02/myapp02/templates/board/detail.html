@@ -1,0 +1,75 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="container">
+    <h3>상세보기</h3>
+    <table class="table table-hover">
+        <tr>
+            <th>글번호</th>
+            <td>{{dto.id}}</td>
+            <th>조회수</th>
+            <td>{{dto.hit}}</td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td>{{dto.writer}}</td>
+            <th>등록일</th>
+            <td>{{dto.post_date}}</td>
+        </tr>
+        <tr>
+            <th>글제목</th>
+            <td colspan="3">{{dto.title}}</td>
+        </tr>
+        <tr>
+            <th>글내용</th>
+            <td colspan="3">{{dto.content}}</td>
+        </tr>
+        <tr>
+            <th>파일</th>
+            <td colspan="3">{{dto.filename}}
+                {%if dto.filesize > 0%}
+                ({{dto.filesize}}KB)
+                {%endif%}
+            </td>
+        </tr>
+    </table>
+    <button type="button" class="btn btn-outline-primary btn-sm _update" data-uri="/update_form/{{dto.id}}">수정</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm _delete" data-uri="/delete/{{dto.id}}">삭제</button>
+
+    <!-- comment insert -->
+    <div class="mt-3">
+        <form action="/comment/" method="post">
+            <input type="hidden" name="id" value="{{dto.id}}">
+            <div class="form-group">
+                <label for="content">Comment:</label>
+                <textarea class="form-control" rows="3" id="content" placeholder="Enter content" name="content"></textarea>
+              </div>
+              <button type="submit" class="btn btn-outline-primary btn-sm">CommentWrite</button>
+        </form>
+    </div>
+    <!-- comment count -->
+    <div class="mt-3">Comment({{dto.comment_set.count}})</div>
+    <!-- comment list -->
+    {%if dto.comment_set.count > 0%}
+    <div>
+        {%for comment in dto.comment_set.all%}
+        <div class="py-2 text-muted">
+            <span >{{comment.content}}</span>
+            <span> // {{comment.writer}} // {{comment.post_date|date:"Y-m-d"}}</span>
+        </div>
+        {%endfor%}
+    </div>
+    {%endif%}
+</div>
+{%endblock%}
+{%block script%}
+<script>
+    $("._update").on("click", function(){
+        location.href=$(this).attr('data-uri')
+    })
+    $("._delete").on("click", function(){
+        alert("정말 삭제하시겠습니까?")
+        location.href= $(this).data('uri')
+    })
+</script>
+{%endblock%}
