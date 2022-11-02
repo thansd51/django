@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<div class="container">
+    <div class="d-flex justify-content-end mb-3">
+    </div>        
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>내용</th>
+                <th>평점</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {%for i in dto%}
+                    <td>{{i.title}}</td>
+                    <td>{{i.content}}</td>
+                    <td>{{i.point}}</td>
+                </tr>
+                {%endfor%}
+        </tbody>
+    </table>
+</div>
+{%endblock%}
